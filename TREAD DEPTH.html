@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>convert MM to /32"</title>
+	
+	<script  type="text/javascript">
+	
+	class Tread {
+
+		constuctor(){
+			this.RF=0;
+			this.RR=0;
+			this.LR=0;
+			this.LF=0;
+			this.RFmm=0;
+			this.RRmm=0;
+			this.LRmm=0;
+			this.LFmm=0;
+		}
+		//return a style:color bases on values of submitted tread depth
+		colour(tread_depth){
+			if(tread_depth <= 3){
+				return '<span style="color:red">';
+			}else if(tread_depth < 6){
+				return '<span style="color:orange">';
+			}else{
+				return '<span style="color:green">';
+			}
+			
+		}
+		calculate() {
+		
+			this.RFmm = document.getElementById('RF').value;
+			this.RRmm = document.getElementById('RR').value;
+			this.LRmm = document.getElementById('LR').value;
+			this.LFmm = document.getElementById('LF').value;
+
+			this.RF = ((this.RFmm/24.5)*32).toFixed(1);
+			this.RR = ((this.RRmm/24.5)*32).toFixed(1);
+			this.LR = ((this.LRmm/24.5)*32).toFixed(1);
+			this.LF = ((this.LFmm/24.5)*32).toFixed(1);
+
+			//output coverserion results
+			document.getElementById('aRF').innerHTML = 
+			'&nbsp&nbsp= ' + (this.colour(this.RF))
+			+ this.RF + ' /32" </span>';
+		
+			document.getElementById('aRR').innerHTML = 
+			'&nbsp&nbsp= ' + (this.colour(this.RR))
+			+ this.RR + ' /32" </span>';
+		
+			document.getElementById('aLR').innerHTML = 
+			'&nbsp&nbsp= ' + (this.colour(this.LR))
+			+ this.LR + ' /32" </span>';
+		
+			document.getElementById('aLF').innerHTML = 
+			'&nbsp&nbsp= ' + (this.colour(this.LF))
+			+ this.LF + ' /32" </span>';
+		
+			//output results to the screen to copy paste to the inspection form
+			document.getElementById('copy_paste').innerHTML = 
+			'Tires tread depth<br>'
+			+ (this.colour(this.RF)) 
+			+ 'Right front: ' + this.RF + '/32" ---- ' + this.RFmm + '&nbspmm<br>' + '</span>' 
+			+ (this.colour(this.RR))
+			+ 'Right rear : ' + this.RR + '/32" ---- ' + this.RRmm + '&nbspmm<br>' + '</span>' 
+			+ (this.colour(this.LR))
+			+ 'Left  rear : ' + this.LR + '/32" ---- ' + this.LRmm + '&nbspmm<br>' + '</span>' 
+			+ (this.colour(this.LF))
+			+ 'Left front : ' + this.LF + '/32" ---- ' + this.LFmm + '&nbspmm<br>' + '</span>' 
+			+ '<br>';
+
+		}
+		myClear() { 
+
+			document.getElementById('RF').value = null;
+			document.getElementById('RR').value = null;
+			document.getElementById('LR').value = null;
+			document.getElementById('LF').value = null;
+			this.calculate();
+		}
+	
+	}
+	const tread = new Tread();
+	</script>
+	<style type = "text/css">
+		p{
+			font-size:x-large;
+		}
+		label{
+			font-size:x-large;	
+		}	
+		span{
+			font-size : x-large;
+		}
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+    		-webkit-appearance: none;
+		}
+	</style>
+	
+</head>
+<body onLoad="tread.calculate()">
+<p><br><br><br><br><br>
+<button type="button" id="reset" onClick="tread.myClear()">CLEAR FORM</button>
+<br>
+<table>
+<tbody>
+	<tr>
+		<td><label for="RF">Enter value in MM RF:</label></td>
+		<td><input type="number" id="RF" name="RF" onkeyup="tread.calculate();" ></input></td>
+		<td><span id="aRF"></span></td>
+	</tr>
+	<tr>
+		<td><label for="RR">Enter value in MM RR:</label></td>
+		<td><input type="number" id="RR" name="RR" onkeyup="tread.calculate()" ></input></td>
+		<td><span id="aRR"></span></td>
+	</tr>
+	<tr>
+		<td><label for="LR">Enter value in MM LR:</label></td>
+		<td><input type="number" id="LR" name="LR" onkeyup="tread.calculate()" ></input></td>
+		<td><span id="aLR"></span></td>
+	</tr>
+	<tr>
+		<td><label for="LF">Enter value in MM LF:</label></td>
+		<td><input type="number" id="LF" name="LF" onkeyup="tread.calculate()" ></input></td>
+		<td><span id="aLF"></span></td>
+	</tr>
+</tbody>
+</table>
+<br>
+<button type="button" id="calculate" name="calculate" onClick="tread.calculate();">Calculate and output results</button>
+<br>
+</p>
+<p id="copy_paste"></p>
+</body>
+</html>
