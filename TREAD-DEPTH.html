@@ -12,10 +12,19 @@
 			this.RR=0;
 			this.LR=0;
 			this.LF=0;
+			this.wRF=0;
+			this.wRR=0;
+			this.wLR=0;
+			this.wLF=0;
 			this.RFmm=0;
 			this.RRmm=0;
 			this.LRmm=0;
 			this.LFmm=0;
+			this.wRFmm=0;
+			this.wRRmm=0;
+			this.wLRmm=0;
+			this.wLFmm=0;
+			this.hasWinterTires=false;
 		}
 		//return a style:color bases on values of submitted tread depth
 		colour(tread_depth){
@@ -37,39 +46,56 @@
 			this.LRmm = document.getElementById('LR').value;
 			this.LFmm = document.getElementById('LF').value;
 
+			this.wRFmm = document.getElementById('wRF').value;
+			this.wRRmm = document.getElementById('wRR').value;
+			this.wLRmm = document.getElementById('wLR').value;
+			this.wLFmm = document.getElementById('wLF').value;
+
 			this.RF = ((this.RFmm/24.5)*32).toFixed(1);
 			this.RR = ((this.RRmm/24.5)*32).toFixed(1);
 			this.LR = ((this.LRmm/24.5)*32).toFixed(1);
 			this.LF = ((this.LFmm/24.5)*32).toFixed(1);
 
-			//output coverserion results
-			document.getElementById('aRF').innerHTML =
-			'&nbsp&nbsp= ' + (this.colour(this.RF))
-			+ this.RF + ' /32" </span>';
+			this.wRF = ((this.wRFmm/24.5)*32).toFixed(1);
+			this.wRR = ((this.wRRmm/24.5)*32).toFixed(1);
+			this.wLR = ((this.wLRmm/24.5)*32).toFixed(1);
+			this.wLF = ((this.wLFmm/24.5)*32).toFixed(1);
 
-			document.getElementById('aRR').innerHTML =
-			'&nbsp&nbsp= ' + (this.colour(this.RR))
-			+ this.RR + ' /32" </span>';
-
-			document.getElementById('aLR').innerHTML =
-			'&nbsp&nbsp= ' + (this.colour(this.LR))
-			+ this.LR + ' /32" </span>';
-
-			document.getElementById('aLF').innerHTML =
-			'&nbsp&nbsp= ' + (this.colour(this.LF))
-			+ this.LF + ' /32" </span>';
+			if ( !isNaN(this.wRFmm) && this.wRFmm > 0)
+			{
+				this.hasWinterTires = true;
+			}else{
+				this.hasWinterTires = false;
+			}
 
 			//output results to the screen to copy paste to the inspection form
 			document.getElementById('copy_paste').innerHTML =
-			'Tires tread depth<br>'
+			'tread depth:<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSummer &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
+			+ ((this.hasWinterTires)?'&nbsp&nbsp&nbsp&nbsp|| Winter<br>':'<br>')
+			//summer
 			+ (this.colour(this.RF))
-			+ 'RF: ' + this.RF + '/32" ---- ' + this.RFmm + '&nbspmm<br>' + '</span>'
+			+ 'RF: ' + this.RF + '/32" (' + this.RFmm + '&nbspmm)' + '</span>'
+			//winter
+			+ ((this.hasWinterTires)?(this.colour(this.wRF)):'<span>')
+			+ ((this.hasWinterTires)?'&nbsp|| ' + this.wRF + '/32" (' + this.wRFmm + '&nbspmm)':'') + '</span><br>'
+			//summer
 			+ (this.colour(this.RR))
-			+ 'RR: ' + this.RR + '/32" ---- ' + this.RRmm + '&nbspmm<br>' + '</span>'
+			+ 'RR: ' + this.RR + '/32" (' + this.RRmm + '&nbspmm)' + '</span>'
+			//winter
+			+ ((this.hasWinterTires)?(this.colour(this.wRR)):'<span>')
+			+ ((this.hasWinterTires)?'&nbsp|| ' + this.wRR + '/32" (' + this.wRRmm + '&nbspmm)':'') + '</span><br>'
+			//summer
 			+ (this.colour(this.LR))
-			+ 'LR: ' + this.LR + '/32" ---- ' + this.LRmm + '&nbspmm<br>' + '</span>'
+			+ 'LR: ' + this.LR + '/32" (' + this.LRmm + '&nbspmm)' + '</span>'
+			//winter
+			+ ((this.hasWinterTires)?(this.colour(this.wLR)):'<span>')
+			+ ((this.hasWinterTires)?'&nbsp|| ' + this.wLR + '/32" (' + this.wLRmm + '&nbspmm)':'') + '</span><br>'
+			//summer
 			+ (this.colour(this.LF))
-			+ 'LF: ' + this.LF + '/32" ---- ' + this.LFmm + '&nbspmm<br>' + '</span>'
+			+ 'LF: ' + this.LF + '/32" (' + this.LFmm + '&nbspmm)' + '</span>'
+			//winter
+			+ ((this.hasWinterTires)?(this.colour(this.wLF)):'<span>')
+			+ ((this.hasWinterTires)?'&nbsp|| ' + this.wLF + '/32" (' + this.wLFmm + '&nbspmm)':'') + '</span><br>'
 			+ '<br>';
 
 		}
@@ -79,6 +105,10 @@
 			document.getElementById('RR').value = null;
 			document.getElementById('LR').value = null;
 			document.getElementById('LF').value = null;
+			document.getElementById('wRF').value = null;
+			document.getElementById('wRR').value = null;
+			document.getElementById('wLR').value = null;
+			document.getElementById('wLF').value = null;
 			this.calculate();
 		}
 
@@ -95,43 +125,51 @@
 		span{
 			font-size : x-large;
 		}
-		input::-webkit-outer-spin-button,
-		input::-webkit-inner-spin-button {
-    		-webkit-appearance: none;
+		table, th, td {
+  		//border: 1px solid black;
+  		//border-collapse: collapse;
 		}
 	</style>
 
 </head>
 <body onLoad="tread.calculate()">
-<p><br><br><br><br><br>
+<p>
 <button type="button" id="reset" onClick="tread.myClear()">CLEAR FORM</button>
 <br>
+
 <table>
-<tbody>
-	<tr>
-		<td><label for="RF">Enter value in MM RF:</label></td>
-		<td><input type="number" id="RF" name="RF" onkeyup="tread.calculate();" ></input></td>
-		<td><span id="aRF"></span></td>
-	</tr>
-	<tr>
-		<td><label for="RR">Enter value in MM RR:</label></td>
-		<td><input type="number" id="RR" name="RR" onkeyup="tread.calculate()" ></input></td>
-		<td><span id="aRR"></span></td>
-	</tr>
-	<tr>
-		<td><label for="LR">Enter value in MM LR:</label></td>
-		<td><input type="number" id="LR" name="LR" onkeyup="tread.calculate()" ></input></td>
-		<td><span id="aLR"></span></td>
-	</tr>
-	<tr>
-		<td><label for="LF">Enter value in MM LF:</label></td>
-		<td><input type="number" id="LF" name="LF" onkeyup="tread.calculate()" ></input></td>
-		<td><span id="aLF"></span></td>
-	</tr>
-</tbody>
+	<tbody>
+		<tr>
+			<td></td>
+			<td><span style="color:red;">SUMMER</span></td>
+			<td><span style="color:blue;">WINTER</span></td>
+		</tr>
+		<tr>
+			<td><label for="RF">Enter value in MM RF:</label></td>
+			<td><input  tabindex="1" size="2" id="RF" name="RF" onkeyup="tread.calculate();"></input></td>
+			<td><input  tabindex="5" accept=""size="2" id="wRF" name="wRF" onkeyup="tread.calculate();" ></input></td>
+		</tr>
+		<tr>
+			<td><label for="RR">Enter value in MM RR:</label></td>
+			<td><input tabindex="2" size="2" id="RR" name="RR" onkeyup="tread.calculate()" ></input></td>
+			<td><input tabindex="6" size="2" id="wRR" name="wRR" onkeyup="tread.calculate()" ></td>
+		</tr>
+		<tr>
+			<td><label for="LR">Enter value in MM LR:</label></td>
+			<td><input tabindex="3" size="2" id="LR" name="LR" onkeyup="tread.calculate()" ></input></td>
+			<td><input tabindex="7" size="2" id="wLR" name="wLR" onkeyup="tread.calculate()" ></td>
+		</tr>
+		<tr>
+			<td><label for="LF">Enter value in MM LF:</label></td>
+			<td><input tabindex="4" size="2" id="LF" name="LF" onkeyup="tread.calculate()" ></input></td>
+			<td><input tabindex="8" size="2" id="wLF" name="wLF" onkeyup="tread.calculate()" ></td>
+		</tr>
+	</tbody>
 </table>
+
+
 <br>
-<button type="button" id="calculate" name="calculate" onClick="tread.calculate();">Calculate and output results</button>
+<button tabindex="9" type="button" id="calculate" name="calculate" onClick="tread.calculate();">Calculate and output results</button>
 <br>
 </p>
 <p id="copy_paste" name="copy_paste"></p>
