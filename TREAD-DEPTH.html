@@ -25,6 +25,7 @@
 			this.wLRmm=0;
 			this.wLFmm=0;
 			this.hasWinterTires=false;
+			this.hasSummerTires=false;
 		}
 		//return a style:color bases on values of submitted tread depth
 		colour(tread_depth){
@@ -36,6 +37,15 @@
 				return '<span style="color:green">';
 			}
 
+		}
+
+		//display separator or not depending on one or two sets of hasSummerTires
+		dispSeparator(hasSummers){
+			if(hasSummers){
+				return '&nbsp|| ';
+			}else{
+				return '';
+			}
 		}
 
 
@@ -61,41 +71,48 @@
 			this.wLR = ((this.wLRmm/24.5)*32).toFixed(1);
 			this.wLF = ((this.wLFmm/24.5)*32).toFixed(1);
 
-			if ( !isNaN(this.wRFmm) && this.wRFmm > 0)
+			//test to see if there is any entry in the winter wheel input boxes
+			if ( (!isNaN(this.wRFmm) && this.wRFmm > 0) || (!isNaN(this.wRRmm) && this.wRRmm > 0) || (!isNaN(this.wLRmm) && this.wLRmm > 0) || (!isNaN(this.wLFmm) && this.wLFmm > 0))
 			{
 				this.hasWinterTires = true;
 			}else{
 				this.hasWinterTires = false;
 			}
 
+			//test to see if there is any entry in the summer wheel input boxes
+			if ( (!isNaN(this.RFmm) && this.RFmm > 0) || (!isNaN(this.RRmm) && this.RRmm > 0) || (!isNaN(this.LRmm) && this.LRmm > 0) || (!isNaN(this.LFmm) && this.LFmm > 0))
+			{
+				this.hasSummerTires = true;
+			}else{
+				this.hasSummerTires = false;
+			}
+
 			//output results to the screen to copy paste to the inspection form
 			document.getElementById('copy_paste').innerHTML =
-			'tread depth:<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSummer &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
-			+ ((this.hasWinterTires)?'&nbsp&nbsp&nbsp&nbsp|| Winter<br>':'<br>')
+			'tread depth:<br>'
+			+((this.hasSummerTires)?'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSummer':'')
+			+ ((this.hasSummerTires && this.hasWinterTires)?'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp':'')
+			+ ((this.hasWinterTires)?'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspWinter<br>':'<br>')
 			//summer
-			+ (this.colour(this.RF))
-			+ 'RF: ' + this.RF + '/32" (' + this.RFmm + '&nbspmm)' + '</span>'
+			+ 'RF: ' + ((this.hasSummerTires)?((this.colour(this.RF)) + this.RF + '/32" (' + this.RFmm + '&nbspmm)' + '</span>'): '')
 			//winter
 			+ ((this.hasWinterTires)?(this.colour(this.wRF)):'<span>')
-			+ ((this.hasWinterTires)?'&nbsp|| ' + this.wRF + '/32" (' + this.wRFmm + '&nbspmm)':'') + '</span><br>'
+			+ ((this.hasWinterTires)?this.dispSeparator(this.hasSummerTires) + this.wRF + '/32" (' + this.wRFmm + '&nbspmm)':'') + '</span><br>'
 			//summer
-			+ (this.colour(this.RR))
-			+ 'RR: ' + this.RR + '/32" (' + this.RRmm + '&nbspmm)' + '</span>'
+			+ 'RR: ' + ((this.hasSummerTires)?(this.colour(this.RR)) + this.RR + '/32" (' + this.RRmm + '&nbspmm)' + '</span>' : '')
 			//winter
 			+ ((this.hasWinterTires)?(this.colour(this.wRR)):'<span>')
-			+ ((this.hasWinterTires)?'&nbsp|| ' + this.wRR + '/32" (' + this.wRRmm + '&nbspmm)':'') + '</span><br>'
+			+ ((this.hasWinterTires)?this.dispSeparator(this.hasSummerTires) + this.wRR + '/32" (' + this.wRRmm + '&nbspmm)':'') + '</span><br>'
 			//summer
-			+ (this.colour(this.LR))
-			+ 'LR: ' + this.LR + '/32" (' + this.LRmm + '&nbspmm)' + '</span>'
+			+ 'LR: ' + ((this.hasSummerTires)?(this.colour(this.LR)) + this.LR + '/32" (' + this.LRmm + '&nbspmm)' + '</span>':'')
 			//winter
 			+ ((this.hasWinterTires)?(this.colour(this.wLR)):'<span>')
-			+ ((this.hasWinterTires)?'&nbsp|| ' + this.wLR + '/32" (' + this.wLRmm + '&nbspmm)':'') + '</span><br>'
+			+ ((this.hasWinterTires)?this.dispSeparator(this.hasSummerTires) + this.wLR + '/32" (' + this.wLRmm + '&nbspmm)':'') + '</span><br>'
 			//summer
-			+ (this.colour(this.LF))
-			+ 'LF: ' + this.LF + '/32" (' + this.LFmm + '&nbspmm)' + '</span>'
+			+ 'LF: ' + ((this.hasSummerTires)?(this.colour(this.LF)) + this.LF + '/32" (' + this.LFmm + '&nbspmm)' + '</span>':'')
 			//winter
 			+ ((this.hasWinterTires)?(this.colour(this.wLF)):'<span>')
-			+ ((this.hasWinterTires)?'&nbsp|| ' + this.wLF + '/32" (' + this.wLFmm + '&nbspmm)':'') + '</span><br>'
+			+ ((this.hasWinterTires)?this.dispSeparator(this.hasSummerTires) + this.wLF + '/32" (' + this.wLFmm + '&nbspmm)':'') + '</span><br>'
 			+ '<br>';
 
 		}
