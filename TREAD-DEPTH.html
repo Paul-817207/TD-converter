@@ -51,6 +51,10 @@
 
 		calculate() {
 
+			//this sets a timer to clear the form after a period of time of inactivity to have a
+			//clear form to work from for the  next vehicle
+			window.setTimeout(this.myClear,600000);
+
 			this.RFmm = document.getElementById('RF').value;
 			this.RRmm = document.getElementById('RR').value;
 			this.LRmm = document.getElementById('LR').value;
@@ -118,6 +122,9 @@
 		}
 		myClear() {
 
+			//first clear the output text
+			document.getElementById('copy_paste').innerHTML='';
+			//now clear the input forms
 			document.getElementById('RF').value = null;
 			document.getElementById('RR').value = null;
 			document.getElementById('LR').value = null;
